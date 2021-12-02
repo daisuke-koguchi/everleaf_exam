@@ -1,0 +1,12 @@
+<h1>タスクの新規作成</h1>
+<%= form_with(model:@task, local: true) do |form| %>
+  <div class="task_name">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div class="task_description">
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+  <%= form.submit%>
+<% end %>
