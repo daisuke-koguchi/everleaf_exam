@@ -7,8 +7,8 @@
 ### Taskモデル  
 | カラム名（日本語） | カラム名（英語） | データ型 | 
 | ------------------ | ---------------- | -------- | 
-| 名前               | name            | string   | 
-| 詳細               | description           | text     | 
+| タスク名               | name            | string   | 
+| タスク詳細               | description           | text     | 
 | ステータス         | status           | string   | 
 | 優先度             | priority         | integer  | 
 ### Labelモデル
