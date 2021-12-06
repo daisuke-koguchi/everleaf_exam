@@ -10,14 +10,14 @@ gem 'webpacker', '~> 4.0'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'pry-rails'
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'bootsnap', '>= 1.4.2', require: false 
+gem 'rexml'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-rails'
   gem 'spring-commands-rspec'
   gem 'factory_bot_rails'
-  gem 'rexml'
   gem 'faker'
   gem 'launchy'
 end
@@ -30,7 +30,8 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '>= 2.15'
+  gem 'capybara'
   gem 'webdrivers'
+  gem 'selenium-webdriver'
 end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
