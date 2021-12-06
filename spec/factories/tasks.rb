@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :task do
-    name {'テストnameです'}
-    description {'Rspecの準備をする'}
+      name { 'テストタイトル'}
+      description {'テスト詳細'}
   end
 end
