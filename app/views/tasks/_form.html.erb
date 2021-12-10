@@ -1,6 +1,6 @@
 <% if @task.errors.any? %>
   <div class="error-explanation">
-    <h4><%= @task.errors.count%>件のエラーが有ります！</h4>
+    <h4><%= @task.errors.count%>件のエラーが有ります!</h4>
     <ul>
       <%= @task.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
@@ -20,6 +20,10 @@
   <div id="task_deadline">
     <%= form.label :deadline %>
     <%= form.date_select :deadline %>
+  </div>
+  <div>
+  <%= form.label :status %>
+  <%= form.select :status,Task.statuses.keys.to_a%>
   </div>
   <%= form.submit "登録",class:'btn btn-primary '%>
 <% end %>
