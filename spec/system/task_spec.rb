@@ -14,11 +14,15 @@ RSpec.describe 'タスク管理機能', type: :system do
         find("#task_deadline_1i").find("option[value='2016']").select_option
         find("#task_deadline_2i").find("option[value='10']").select_option
         find("#task_deadline_3i").find("option[value='1']").select_option
+        find("#task_status").find("option[value='完了']").select_option
         click_on '登録'
         expect(page).to have_content '2016-10-01'
+        expect(page).to have_content '完了'
       end
     end
   end
+
+=begin
   describe '一覧表示機能' do
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
@@ -53,4 +57,6 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
+=end
+
 end
