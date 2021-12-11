@@ -2,6 +2,15 @@
   <%= flash.notice %>
 <% end %>
 <h1>タスク一覧</h1>
+  <br>
+  <h3>タスク検索</h3>
+  <%= form_with(url: tasks_path, method: :get, scope: :task ,local: true) do |form| %>
+    <%= form.text_field :name %>
+    <%= form.submit "検索", class:'btn btn-secondary '%>
+  <% end %>
+  <br>
+
+
   <table class="table">
     <thead>
       <tr>
