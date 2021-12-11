@@ -21,8 +21,6 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
-
-=begin
   describe '一覧表示機能' do
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
@@ -57,6 +55,32 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
-=end
-
+  describe '検索機能'do
+    context 'タイトルであいまい検索をした場合' do
+      it '検索キーワードを含むタスクで絞り込まれる' do 
+        visit tasks_path
+        fill_in 'task[name]',with: 'テストタイトル1'
+        click_on '検索'
+        expect(page).to have_content 'テストタイトル1'
+      end
+    end
+    context'ステータスを検索した場合' do
+      it 'ステータスに完全一致するタスクが絞り込まれる'do 
+        visit tasks_path
+        select '未着手', from: 'task[status]'
+        click_on '検索'
+        expect(page).to have_content '未着手'
+      end
+    end
+    context'scoopメソッドでタイトルのあいまい検索とステータス検索をした場合' do
+      it '検索キーワードにタイトルを含み、かつステータスに一致するタスクに絞り込まれる'do
+        visit tasks_path
+        fill_in 'task[name]',with:'テストタイトル2'
+        select '完了',from: 'task[status]'
+        click_on '検索'
+        expect(page).to have_content 'テストタイトル'
+        expect(page).to have_content '完了'
+      end
+    end
+  end
 end
