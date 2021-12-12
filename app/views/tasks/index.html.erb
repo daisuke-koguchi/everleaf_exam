@@ -33,7 +33,7 @@
         <td><%= task.description %></td>
         <td id='deadline'><%= task.deadline %></td>
         <td><%= task.status %></td>
-        <td><%= task.priority %></td>
+        <td id="priority"><%= task.priority %></td>
         <td><%= link_to"詳細",task_path(task.id), class:'btn btn-success' %></td>
         <td><%= link_to"編集",edit_task_path(task.id), class:'btn btn-info' %></td>
         <td><%= link_to"削除",task_path(task.id), method: :delete, data:{confirm: "本当に削除しますか？"}, class:'btn btn-danger'%></td>
