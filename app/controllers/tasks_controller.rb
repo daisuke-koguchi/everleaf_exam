@@ -1,28 +1,20 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i(show edit update destroy)
   def index
-    if params[:task].present?
+    if params[:sort_expired]
+      @tasks = Task.deadline.page(params[:page])
+    elsif params[:sort_priority]
+      @tasks = Task.priority.page(params[:page])
+    elsif params[:task].present?
       if params[:task][:name].present? && params[:task][:status].present?
-        @tasks = Task.search_name(params[:task][:name]).search_status(params[:task][:status])
-        @tasks = Task.page(params[:page])
+        @tasks = Task.search_name(params[:task][:name]).search_status(params[:task][:status]).page(params[:page])
       elsif params[:task][:name].present?
-        @tasks = Task.search_name(params[:task][:name])
-        @tasks = Task.page(params[:page])
+        @tasks = Task.search_name(params[:task][:name]).page(params[:page])
       elsif params[:task][:status].present?
-        @tasks = Task.search_status(params[:task][:status])
-        @tasks = Task.page(params[:page])
+        @tasks = Task.search_status(params[:task][:status]).page(params[:page])
       end
-    else
-      if params[:sort_expired] == "true"
-        @tasks = Task.deadline
-        @tasks = Task.page(params[:page])
-      elsif params[:sort_priority] == "true"
-        @tasks = Task.priority
-        @tasks = Task.page(params[:page])
-      else
-        @tasks = Task.created_at
-        @tasks = Task.page(params[:page])
-      end
+    else 
+      @tasks = Task.created_at.page(params[:page])
     end
   end
 
