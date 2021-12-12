@@ -7,7 +7,7 @@ class Task < ApplicationRecord
   scope :search_status, ->(count){ where(status: "#{count}") }
   scope :deadline, ->{all.order(deadline: "DESC")}
   scope :created_at, ->{all.order(created_at: "DESC")}
-  enum priority: {'選択してください':0 ,'高':1, '中':2, '低':3}
+  enum priority: {'選択':0 ,'高':1, '中':2, '低':3}
   scope :priority, ->{all.order(priority: "ASC")}
   paginates_per 10   
 end
