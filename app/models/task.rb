@@ -9,4 +9,5 @@ class Task < ApplicationRecord
   scope :created_at, ->{all.order(created_at: "DESC")}
   enum priority: {'高':0, '中': 1, '低':2}
   scope :priority, ->{all.order(priority: "ASC")}
+  paginates_per 5 
 end

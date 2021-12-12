@@ -4,18 +4,24 @@ class TasksController < ApplicationController
     if params[:task].present?
       if params[:task][:name].present? && params[:task][:status].present?
         @tasks = Task.search_name(params[:task][:name]).search_status(params[:task][:status])
+        @tasks = Task.page(params[:page])
       elsif params[:task][:name].present?
         @tasks = Task.search_name(params[:task][:name])
+        @tasks = Task.page(params[:page])
       elsif params[:task][:status].present?
         @tasks = Task.search_status(params[:task][:status])
+        @tasks = Task.page(params[:page])
       end
     else
       if params[:sort_expired] == "true"
         @tasks = Task.deadline
+        @tasks = Task.page(params[:page])
       elsif params[:sort_priority] == "true"
         @tasks = Task.priority
+        @tasks = Task.page(params[:page])
       else
-      @tasks = Task.created_at
+        @tasks = Task.created_at
+        @tasks = Task.page(params[:page])
       end
     end
   end
