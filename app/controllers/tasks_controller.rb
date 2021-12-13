@@ -2,19 +2,19 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i(show edit update destroy)
   def index
     if params[:sort_expired]
-      @tasks = Task.deadline.page(params[:page])
+      @tasks = current_user.tasks.deadline.page(params[:page])
     elsif params[:sort_priority]
-      @tasks = Task.priority.page(params[:page])
+      @tasks = current_user.tasks.priority.page(params[:page])
     elsif params[:task].present?
       if params[:task][:name].present? && params[:task][:status].present?
-        @tasks = Task.search_name(params[:task][:name]).search_status(params[:task][:status]).page(params[:page])
+        @tasks = current_user.tasks.search_name(params[:task][:name]).search_status(params[:task][:status]).page(params[:page])
       elsif params[:task][:name].present?
-        @tasks = Task.search_name(params[:task][:name]).page(params[:page])
+        @tasks = current_user.tasks.search_name(params[:task][:name]).page(params[:page])
       elsif params[:task][:status].present?
-        @tasks = Task.search_status(params[:task][:status]).page(params[:page])
+        @tasks = current_user.tasks.search_status(params[:task][:status]).page(params[:page])
       end
     else 
-      @tasks = Task.created_at.page(params[:page])
+      @tasks = current_user.tasks.created_at.page(params[:page])
     end
   end
 
@@ -23,10 +23,11 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    binding.pry
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
     if @task.save
       redirect_to tasks_path, notice:"タスク「#{@task.name}」を新規作成しました。"
     else
@@ -52,7 +53,7 @@ class TasksController < ApplicationController
 
   private
   def task_params
-    params.require(:task).permit(:name, :description, :deadline, :status, :priority)
+    params.require(:task).permit(:name, :description, :deadline, :status, :priority).merge(user_id:current_user.id)
   end
   def set_task
     @task = Task.find(params[:id])

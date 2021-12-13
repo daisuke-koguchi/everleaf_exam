@@ -2,12 +2,14 @@
   <div id="error_explanation">
     <ul>
       <h4><%= @user.errors.full_messages.each do |msg|%></h4>
-        <li><%= msg%></li>
+        <li><%= msg %></li>
       <% end %>
     </ul>
   </div>
 <% end %>
-<h1>サインアップ</h1>
+<div class="jumbotron text-white">
+  <h1>サインアップ</h1>
+</div>
 <%= form_with(model: @user, local:true) do |form| %>
 <div class="form-group">
   <%= form.label :name %>
@@ -25,5 +27,5 @@
   <%= form.label :password_confirmation %>
   <%= form.password_field :password_confirmation, class:'form-control' %>
 </div>
-  <%= form.submit "サインアップ", class:'btn btn-primary'%>
+  <%= form.submit "サインアップ", class:'btn btn-secondary'%>
 <% end %>
