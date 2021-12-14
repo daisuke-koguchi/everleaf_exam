@@ -26,4 +26,24 @@
     </tr>
   </tbody>
 </table>
+<div class="jumbotron text-white">
+  <h4><%= @user.name %>さんのタスク一覧 </h4>
+</div>
+  <div class="card-deck">
+  <% @user.tasks.each do |task|%>
+    <div class="card">
+      <h4 class="card-header">タスク名:<%= task.name %></h4>
+      <ul>
+        <li>タスク詳細：<%= task.description%></li>
+        <li>更新日時：<%= task.updated_at %></li>
+        <li>ステータス：<%= task.status %></li>
+        <li>優先度：<%= task.priority %></li>
+      </ul>
+      <div class="card-footer">
+        <h6>作成日時：<%= task.created_at %></h6>
+        <h6>終了期限：<%= task.deadline %></h6>
+      </div>
+    </div>
+  <% end %>
+</div>
 <%= link_to "登録ユーザー一覧", admin_users_path, class:'btn btn-info ' %>
