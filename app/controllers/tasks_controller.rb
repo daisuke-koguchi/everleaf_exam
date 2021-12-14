@@ -23,7 +23,6 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
-    binding.pry
   end
 
   def create
