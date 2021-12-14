@@ -20,6 +20,7 @@ class UsersController < ApplicationController
         redirect_to tasks_path,notice:"他のユーザのマイページにはアクセス出来ません!"
       end
   end
+  private 
   def user_params 
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end

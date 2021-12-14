@@ -1,3 +1,6 @@
+<div class="jumbotron text-white">
+  <h1>ユーザー編集</h1>
+</div>
 <% if @user.errors.any?%>
   <div id="error_explanation">
     <ul>
@@ -7,10 +10,7 @@
     </ul>
   </div>
 <% end %>
-<div class="jumbotron text-white">
-  <h1>サインアップ</h1>
-</div>
-<%= form_with(model: @user, local: true) do |form| %>
+<%= form_with(model:[:admin,@user], local: true) do |form| %>
 <div class="form-group">
   <%= form.label :name %>
   <%= form.text_field :name, class:'form-control'%>
@@ -27,5 +27,9 @@
   <%= form.label :password_confirmation %>
   <%= form.password_field :password_confirmation, class:'form-control' %>
 </div>
-  <%= form.submit "サインアップ", class:'btn btn-secondary'%>
+<div class="form-check">
+  <%= form.check_box :admin , class:'form-check-input' %>
+  <%= form.label :admin , class:'form-check-label' %> 
+</div>
+  <%= form.submit "編集する", class:'btn btn-secondary'%>
 <% end %>

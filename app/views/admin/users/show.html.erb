@@ -1,0 +1,29 @@
+<div class="jumbotron text-white">
+  <h1>ユーザー詳細</h1>
+</div>
+<%= notice %>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>名前</th>
+      <td><%= @user.name %></td>
+    </tr>
+    <tr>
+      <th>メールアドレス</th>
+      <td><%= @user.email %></td>
+    </tr>
+    <tr>
+      <th>作成日時</th>
+      <td><%= @user.created_at %></td>
+    </tr>
+    <tr>
+      <th>編集日時</th>
+      <td><%= @user.updated_at %></td>
+    </tr>
+    <tr>
+      <th>管理者登録</th>
+      <td><%= @user.admin? ? 'あり': 'なし' %></td>
+    </tr>
+  </tbody>
+</table>
+<%= link_to "登録ユーザー一覧", admin_users_path, class:'btn btn-info ' %>
