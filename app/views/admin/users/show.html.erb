@@ -21,7 +21,7 @@
       <td><%= @user.updated_at %></td>
     </tr>
     <tr>
-      <th>管理者登録</th>
+      <th>管理者権限</th>
       <td><%= @user.admin? ? 'あり': 'なし' %></td>
     </tr>
   </tbody>
@@ -34,14 +34,14 @@
     <div class="card">
       <h4 class="card-header">タスク名:<%= task.name %></h4>
       <ul>
-        <li>タスク詳細：<%= task.description%></li>
-        <li>更新日時：<%= task.updated_at %></li>
-        <li>ステータス：<%= task.status %></li>
-        <li>優先度：<%= task.priority %></li>
+        <li>タスク詳細: <%= task.description%></li>
+        <li>更新日時: <%= task.updated_at %></li>
+        <li>ステータス: <%= task.status %></li>
+        <li>優先度: <%= task.priority %></li>
       </ul>
       <div class="card-footer">
-        <h6>作成日時：<%= task.created_at %></h6>
-        <h6>終了期限：<%= task.deadline %></h6>
+        <h6>作成日時: <%= task.created_at %></h6>
+        <h6>終了期限: <%= task.deadline %></h6>
       </div>
     </div>
   <% end %>

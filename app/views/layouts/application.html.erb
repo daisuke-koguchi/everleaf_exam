@@ -17,6 +17,9 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active"><%= link_to "プロフィール", user_path(current_user.id), class:'nav-link' %></li>
           <li class="nav-item active"><%= link_to "ログアウト", session_path(current_user.id),method: :delete, class:'nav-link'%></li>
+          <% if current_user.admin?%>
+            <li class="nav-item active"><%= link_to "管理者画面へ",admin_users_path, class:'nav-link'%></li>
+          <% end %>
         </ul>
       <% else %>
           <ul class="navbar-nav ml-auto">
