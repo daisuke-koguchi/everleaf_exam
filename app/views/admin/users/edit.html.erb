@@ -3,6 +3,7 @@
 </div>
 <% if @user.errors.any?%>
   <div id="error_explanation">
+  <h4><%= @task.errors.count%>件のエラーが有ります!</h4>
     <ul>
       <h4><%= @user.errors.full_messages.each do |msg|%></h4>
         <li><%= msg %></li>
@@ -10,6 +11,7 @@
     </ul>
   </div>
 <% end %>
+<%= notice %>
 <%= form_with(model:[:admin,@user], local: true) do |form| %>
 <div class="form-group">
   <%= form.label :name %>
@@ -33,3 +35,5 @@
 </div>
   <%= form.submit "編集する", class:'btn btn-secondary'%>
 <% end %>
+<br>
+<%= link_to "登録ユーザー一覧", admin_users_path, class:'btn btn-info ' %>
