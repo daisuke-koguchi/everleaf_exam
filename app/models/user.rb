@@ -9,13 +9,11 @@ class User < ApplicationRecord
 
   def must_not_update_last_one_admin
     if User.where(admin: true).count == 1 && self.admin == false
-      binding.pry
       throw :abort
     end
   end
   def must_not_destroy_last_one_admin 
     if User.where(admin: true).count <= 1 && self.admin == true
-      binding.pry
       throw :abort
     end
   end

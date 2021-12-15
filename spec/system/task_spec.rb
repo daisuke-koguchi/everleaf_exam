@@ -1,10 +1,52 @@
 require 'rails_helper'
 RSpec.describe 'タスク管理機能', type: :system do
-  let!(:task){FactoryBot.create(:task)}
-  let!(:second_task){FactoryBot.create(:second_task)}
-  before do 
-    visit tasks_path
+  describe 'ユーザー登録機能'do 
+    context 'ユーザー登録した場合'do
+      it '作成したユーザーが詳細画面に表示される' do
+        visit new_user_path
+        fill_in 'user[name]',	with: 'テストユーザー'
+        fill_in 'user[email]', with: 'test@test.com'
+        fill_in 'user[password]', with: 'password'
+        fill_in 'user[password_confirmation]', with: 'password'
+        click_on 'commit'
+        expect(page).to have_content 'テストユーザー'
+      end
+    end
+    context 'ユーザー登録せずにタスク一覧画面に移動しようとした場合'do
+      it 'ログイン画面に戻される'do 
+      visit tasks_path 
+      expect(page).to have_content 'ログイン画面'
+      end
+    end
   end
+  describe 'セッション機能' do 
+    context 'ログインした場合'do
+      it '"ログインに成功しましたというフラッシュメッセージが表示される"' do
+        user_a = FactoryBot.create(:user, name:'Aユーザー', email: 'a@test.com') 
+        visit new_session_path 
+        fill_in 'session[email]', with: 'a@test.com'
+        fill_in 'session[password]', with: 'password'
+        click_on 'commit'
+        expect(page).to have_content 'ログインに成功しました'
+        end
+      end
+    context 'ログインした場合'do 
+      it '自分の詳細画面にアクセスできる' do 
+
+      end
+    end
+    context '一般ユーザー他人の詳細ページにアクセスする' do
+      it 'タスク一覧画面に遷移する' do 
+
+      end
+    end
+    context 'ログイン時にログアウトボタンを押すと' do 
+      it 'ログアウトできること' do 
+
+      end
+    end
+  end
+=begin
   describe '新規作成機能' do 
     context 'タスクを新規作成した場合' do 
       it '作成したタスクが表示される' do 
@@ -96,4 +138,5 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
+=end
 end
