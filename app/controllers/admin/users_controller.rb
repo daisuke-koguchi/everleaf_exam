@@ -45,6 +45,10 @@ class Admin::UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :password, :password_confirmation,:admin)
   end
   def admin_required 
-    redirect_to tasks_path, notice: '管理者以外はアクセス出来ません!' unless current_user.admin?
+      if logged_in?    
+        redirect_to tasks_path, notice: '管理者以外はアクセス出来ません!' unless current_user.admin?
+      else 
+        redirect_to session_new_path, notice: '管理者以外はアクセス出来ません!'
+      end
   end
 end
