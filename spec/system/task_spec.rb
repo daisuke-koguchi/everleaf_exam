@@ -14,35 +14,62 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context 'ユーザー登録せずにタスク一覧画面に移動しようとした場合'do
       it 'ログイン画面に戻される'do 
-      visit tasks_path 
+      visit tasks_path
       expect(page).to have_content 'ログイン画面'
       end
     end
   end
   describe 'セッション機能' do 
-    context 'ログインした場合'do
-      it '"ログインに成功しましたというフラッシュメッセージが表示される"' do
-        user_a = FactoryBot.create(:user, name:'Aユーザー', email: 'a@test.com') 
+    let(:user_a){FactoryBot.create(:user, name:'ユーザーA',email: 'a@test.com',id:1)}
+
+    before do 
+        FactoryBot.create(:user)
         visit new_session_path 
         fill_in 'session[email]', with: 'a@test.com'
         fill_in 'session[password]', with: 'password'
         click_on 'commit'
-        expect(page).to have_content 'ログインに成功しました'
+    end
+
+    context 'ログインした場合'do
+      it 'ログインに成功すること' do
+        user_b = FactoryBot.create(:user,name:'ユーザーB',email:'b@test.com')
+        visit new_session_path 
+        fill_in 'session[email]', with: 'b@test.com'
+        fill_in 'session[password]', with: 'password'
+        click_on 'commit'
+        expect(current_path).to eq user_path(user_b)
         end
       end
     context 'ログインした場合'do 
       it '自分の詳細画面にアクセスできる' do 
-
+        user_b = FactoryBot.create(:user,name:'ユーザーB',email:'b@test.com')
+        visit new_session_path 
+        fill_in 'session[email]', with: 'b@test.com'
+        fill_in 'session[password]', with: 'password'
+        click_on 'commit'
+        expect(page).to have_content 'ユーザーB'
       end
     end
     context '一般ユーザー他人の詳細ページにアクセスする' do
       it 'タスク一覧画面に遷移する' do 
-
+        user_b = FactoryBot.create(:user,name:'Bユーザー',email: 'b@test.com')
+        visit new_session_path 
+        fill_in 'session[email]', with: 'b@test.com'
+        fill_in 'session[password]', with: 'password'
+        click_on 'commit'
+        visit user_path(user_a)
+        expect(page).to have_content 'タスク一覧'
       end
     end
     context 'ログイン時にログアウトボタンを押すと' do 
       it 'ログアウトできること' do 
-
+        user_b = FactoryBot.create(:user,name:'ユーザーB',email:'b@test.com')
+        visit new_session_path 
+        fill_in 'session[email]', with: 'b@test.com'
+        fill_in 'session[password]', with: 'password'
+        click_on 'commit'
+        click_on 'ログアウト'
+        expect(page).to have_content 'ログイン画面'
       end
     end
   end
