@@ -1,5 +1,8 @@
 require 'rails_helper'
 RSpec.describe 'タスク管理機能', type: :system do
+
+=begin
+
   describe 'ユーザー登録機能'do 
     context 'ユーザー登録した場合'do
       it '作成したユーザーが詳細画面に表示される' do
@@ -21,7 +24,6 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
   describe 'セッション機能' do 
     let(:user_a){FactoryBot.create(:user, name:'ユーザーA',email: 'a@test.com',id:1)}
-
     before do 
         FactoryBot.create(:user)
         visit new_session_path 
@@ -29,7 +31,6 @@ RSpec.describe 'タスク管理機能', type: :system do
         fill_in 'session[password]', with: 'password'
         click_on 'commit'
     end
-
     context 'ログインした場合'do
       it 'ログインに成功すること' do
         user_b = FactoryBot.create(:user,name:'ユーザーB',email:'b@test.com')
@@ -73,7 +74,63 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
-=begin
+  describe '管理画面' do 
+    let!(:admin){FactoryBot.create(:user, name:'管理ユーザー',email: 'admin@test.com', admin:'true' )}
+  
+    before do 
+      visit new_session_path 
+      fill_in 'session[email]', with: 'admin@test.com'
+      fill_in 'session[password]', with: 'password'
+      click_on 'commit'
+    end
+
+    context '管理ユーザーが管理者画面へボタンを押すと' do 
+      it '管理画面（登録ユーザー一覧）にアクセス出来る' do
+        click_on '管理者画面へ'
+        expect(page).to have_content '登録ユーザー一覧'
+      end
+    end
+    context '一般ユーザーが管理画面にアクセスすると'do 
+      it '管理画面にアクセス出来ない' do 
+        FactoryBot.create(:user, name:'一般ユーザー', email:'test@test.com')
+        visit new_session_path 
+        fill_in 'session[email]', with: 'test@test.com'
+        fill_in 'session[password]', with: 'password'
+        click_on 'commit'
+        expect(page).to_not have_button '管理者画面へ'
+      end
+    end
+    context '管理ユーザが新規登録すると' do 
+      it '新規ユーザーが登録出来る' do
+        visit new_admin_user_path 
+        fill_in 'user[name]', with: 'テスト太郎'
+        fill_in 'user[email]', with: 'taro@test.com'
+        fill_in 'user[password]', with: 'password'
+        fill_in 'user[password_confirmation]', with: 'password'
+        check 'user[admin]'
+        click_on 'サインアップ'
+        expect(page).to have_content 'テスト太郎'
+      end
+    end
+    context '管理ユーザが詳細画面のリンクボタンを押すと' do 
+      it '登録ユーザーの詳細画面にアクセス出来る' do 
+        user_c = FactoryBot.create(:user, name:'一般ユーザー')
+        visit admin_user_path(user_c)
+        expect(page).to have_content '一般ユーザー'
+      end
+    end
+    context '管理ユーザーがユーザーの削除ボタンを押すと' do 
+      it 'ユーザーの削除を行える' do
+        user_c = FactoryBot.create(:user, name:'一般ユーザー')
+        visit admin_users_path 
+        all('tbody tr')[1].click_on '削除'
+        expect(page).not_to have_content('一般ユーザー')
+      end
+    end
+  end
+
+=end
+
   describe '新規作成機能' do 
     context 'タスクを新規作成した場合' do 
       it '作成したタスクが表示される' do 
@@ -165,5 +222,4 @@ RSpec.describe 'タスク管理機能', type: :system do
       end
     end
   end
-=end
 end
