@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2021_12_14_054540) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "deadline", default: -> { "now()" }, null: false
-    t.integer "status", null: false
-    t.integer "priority", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "priority", default: 0, null: false
     t.bigint "user_id"
     t.index ["name"], name: "index_tasks_on_name"
     t.index ["user_id"], name: "index_tasks_on_user_id"
