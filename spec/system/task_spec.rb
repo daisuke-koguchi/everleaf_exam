@@ -1,14 +1,11 @@
 require 'rails_helper'
 RSpec.describe 'タスク管理機能', type: :system do
-
-=begin
-
   describe 'ユーザー登録機能'do 
     context 'ユーザー登録した場合'do
       it '作成したユーザーが詳細画面に表示される' do
         visit new_user_path
         fill_in 'user[name]',	with: 'テストユーザー'
-        fill_in 'user[email]', with: 'test@test.com'
+        fill_in 'user[email]', with: 'task@test.com'
         fill_in 'user[password]', with: 'password'
         fill_in 'user[password_confirmation]', with: 'password'
         click_on 'commit'
@@ -25,7 +22,6 @@ RSpec.describe 'タスク管理機能', type: :system do
   describe 'セッション機能' do 
     let(:user_a){FactoryBot.create(:user, name:'ユーザーA',email: 'a@test.com',id:1)}
     before do 
-        FactoryBot.create(:user)
         visit new_session_path 
         fill_in 'session[email]', with: 'a@test.com'
         fill_in 'session[password]', with: 'password'
@@ -92,9 +88,9 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context '一般ユーザーが管理画面にアクセスすると'do 
       it '管理画面にアクセス出来ない' do 
-        FactoryBot.create(:user, name:'一般ユーザー', email:'test@test.com')
+        FactoryBot.create(:user, name:'一般ユーザー', email:'not_admin@test.com')
         visit new_session_path 
-        fill_in 'session[email]', with: 'test@test.com'
+        fill_in 'session[email]', with: 'not_admin@test.com'
         fill_in 'session[password]', with: 'password'
         click_on 'commit'
         expect(page).to_not have_button '管理者画面へ'
@@ -114,24 +110,32 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context '管理ユーザが詳細画面のリンクボタンを押すと' do 
       it '登録ユーザーの詳細画面にアクセス出来る' do 
-        user_c = FactoryBot.create(:user, name:'一般ユーザー')
+        user_c = FactoryBot.create(:user, name:'一般ユーザー',email:'c@test.com')
         visit admin_user_path(user_c)
         expect(page).to have_content '一般ユーザー'
       end
     end
     context '管理ユーザーがユーザーの削除ボタンを押すと' do 
       it 'ユーザーの削除を行える' do
-        user_c = FactoryBot.create(:user, name:'一般ユーザー')
+        user_d = FactoryBot.create(:user, name:'一般ユーザー',email:'d@test.com')
         visit admin_users_path 
         all('tbody tr')[1].click_on '削除'
+        sleep 0.5
         expect(page).not_to have_content('一般ユーザー')
       end
     end
   end
-
-=end
-
   describe '新規作成機能' do 
+    let!(:user){FactoryBot.create(:user,email: 'new@test.com')}
+    let!(:task){FactoryBot.create(:task,user: user)}
+    let!(:task){FactoryBot.create(:second_task,user: user)}
+    before do 
+      visit new_session_path 
+      fill_in 'session[email]', with: 'new@test.com'
+      fill_in 'session[password]', with: 'password'
+      click_on 'commit'
+      visit tasks_path 
+    end
     context 'タスクを新規作成した場合' do 
       it '作成したタスクが表示される' do 
         visit new_task_path
@@ -150,8 +154,21 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
   end
   describe '一覧表示機能' do
+    let!(:user){FactoryBot.create(:user, name:'タスク',email:'task@test.com',password:'password')}
+
+    before do 
+      FactoryBot.create(:task, user: user)
+      FactoryBot.create(:second_task, user: user)
+      visit new_session_path 
+      fill_in 'session[email]', with: 'task@test.com'
+      fill_in 'session[password]', with: 'password'
+      click_on 'commit' 
+      visit tasks_path
+    end
+
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
+        visit tasks_path
         expect(page).to have_content 'テストタイトル1'
         expect(page).to have_content 'テストタイトル2'
       end
@@ -185,15 +202,34 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
   end
   describe '詳細表示機能' do
+    let!(:user_a){FactoryBot.create(:user, name:'タスクユーザー',email:'task@test.com',password:'password')}
+    let!(:task_a){FactoryBot.create(:task, name:'タスク1',user: user_a)}
+    before do 
+      visit new_session_path 
+      fill_in 'session[email]', with: 'task@test.com'
+      fill_in 'session[password]', with: 'password'
+      click_on 'commit' 
+      visit tasks_path
+    end
+
     context '任意のタスク詳細画面に遷移した場合' do 
       it '該当タスクの内容が表示される'do 
-        @task = FactoryBot.create(:task, name:'task',description:'task')
-        visit task_path(@task.id)
-        expect(page).to have_content 'task'
+        visit task_path(task_a)
+        expect(page).to have_content 'タスク1'
       end
     end
   end
   describe '検索機能'do
+  let!(:user_a){FactoryBot.create(:user, name:'タスクユーザー',email:'task@test.com',password:'password')}
+  let!(:task_a){FactoryBot.create(:task, user: user_a)}
+  let!(:task_b){FactoryBot.create(:second_task, user: user_a)}
+    before do 
+      visit new_session_path 
+      fill_in 'session[email]', with: 'task@test.com'
+      fill_in 'session[password]', with: 'password'
+      click_on 'commit' 
+      visit tasks_path
+    end
     context 'タイトルであいまい検索をした場合' do
       it '検索キーワードを含むタスクで絞り込まれる' do 
         visit tasks_path
