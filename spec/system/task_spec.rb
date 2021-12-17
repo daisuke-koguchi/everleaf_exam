@@ -88,6 +88,7 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context '一般ユーザーが管理画面にアクセスすると'do 
       it '管理画面にアクセス出来ない' do 
+        click_on 'ログアウト'
         FactoryBot.create(:user, name:'一般ユーザー', email:'not_admin@test.com')
         visit new_session_path 
         fill_in 'session[email]', with: 'not_admin@test.com'
