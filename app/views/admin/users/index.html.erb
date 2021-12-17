@@ -1,0 +1,39 @@
+<div class="jumbotron text-white">
+  <h1>登録ユーザー一覧</h1>
+</div>
+<%= link_to 'ユーザー登録',new_admin_user_path ,class:'btn btn-primary' %>
+<br>
+<%= notice %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>メールアドレス</th>
+      <th>作成日時</th>
+      <th>編集日時</th>
+      <th>管理者権限</th>
+      <th>タスク数</th>
+      <th>編集</th>
+      <th>詳細</th>
+      <th>削除</th>
+    </tr>
+  <thead>
+  <tbody>
+    <% @users.each do |user|%>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= user.email %></td>
+      <td><%= user.created_at %></td>
+      <td><%= user.updated_at %></td>
+      <td><%= user.admin? ? 'あり' : 'なし' %></td>
+      <td><%= user.tasks.count %></td> 
+      <td><%= link_to '編集',edit_admin_user_path(user.id), class:'btn btn-info',id:'admin_update' %></td>
+      <td><%= link_to '詳細',admin_user_path(user.id),class:'btn btn-success' %></td>
+      <td><%= link_to '削除',admin_user_path(user.id),method: :delete, class:'btn btn-danger'%></td>
+    <% end %>
+    </tr>
+  </tbody>
+</table>
+
+
+

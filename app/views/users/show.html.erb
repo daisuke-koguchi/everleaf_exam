@@ -1,0 +1,15 @@
+<%= notice %>
+<h1>ユーザー詳細</h1>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>名前</th>
+      <td><%=@user.name %></td>
+    </tr>
+    <tr>
+      <th>メールアドレス</th>
+      <td><%=@user.email %></td>
+    </tr> 
+  </tbody>
+</table>
+<%= link_to "タスク一覧画面へ", tasks_path ,class:'btn btn-secondary' %>
