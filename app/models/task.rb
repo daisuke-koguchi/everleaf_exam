@@ -1,5 +1,7 @@
 class Task < ApplicationRecord
-  belongs_to :user 
+  has_many :labellings, dependent: :destroy ,foreign_key:'task_id'
+  has_many :labels, through: :labellings
+  belongs_to :user
   validates :name, presence: true
   validates :description, presence: true 
   validates :deadline, presence: true
