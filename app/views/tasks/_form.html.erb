@@ -29,6 +29,9 @@
     <%= form.label :priority %>
     <%= form.select :priority,Task.priorities.keys.to_a %>
   </div>
+  <div id="task_labels">
+    <%= form.collection_check_boxes(:label_ids,Label.all, :id, :name)%>
+  </div>
   <%= form.submit "登録",class:'btn btn-primary '%>
 <% end %>
 <br>

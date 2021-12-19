@@ -20,3 +20,19 @@ User.create!(
   password_confirmation: 'password',
   admin: true  
 )
+
+Label.create!(
+  name:'英語'
+)
+Label.create!(
+  name:'数学'
+)
+Label.create!(
+  name:'国語'
+)
+Label.create!(
+  name:'社会'
+)
+Label.create!(
+  name:'理科'
+)
