@@ -7,7 +7,11 @@
   </div>
   <h4>ステータス検索</h4>
   <div class="form-group">
-    <%= form.select :status,Task.statuses.keys.to_a,class:"custom-select" %>
+    <%= form.select :status,Task.statuses.keys.to_a ,class:"custom-select" %>
+  </div>
+  <div class="form-group">
+  <h4>ラベル検索</h4>
+    <%= form.select :label_id, Label.all.collect{|p| [p.name,p.id]}, include_blank: true, class:'custom-select' %>  
   </div>
   <%= form.submit "検索", class:'btn btn-secondary '%>
 <% end %>

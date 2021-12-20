@@ -6,11 +6,18 @@ class TasksController < ApplicationController
     elsif params[:sort_priority]
       @tasks = current_user.tasks.priority.page(params[:page])
     elsif params[:task].present?
-      if params[:task][:name].present? && params[:task][:status].present?
-        @tasks = current_user.tasks.search_name(params[:task][:name]).search_status(params[:task][:status]).page(params[:page])
-      elsif params[:task][:name].present?
+      if params[:task][:name].present? && params[:task][:status] == '選択して下さい'
+        binding.pry
         @tasks = current_user.tasks.search_name(params[:task][:name]).page(params[:page])
+      elsif params[:task][:name].present? && params[:task][:status].present?
+        binding.pry
+        @tasks = current_user.tasks.search_name(params[:task][:name]).search_status(params[:task][:status]).page(params[:page])
+      elsif params[:task][:label_id].present?
+        binding.pry
+        @label_task = LabelTask.where(label_id: params[:task][:label_id]).pluck(:task_id)
+        @tasks = current_user.tasks.where(id: @label_task).page(params[:page])
       elsif params[:task][:status].present?
+        binding.pry
         @tasks = current_user.tasks.search_status(params[:task][:status]).page(params[:page])
       end
     else 
@@ -19,7 +26,6 @@ class TasksController < ApplicationController
   end
 
   def show
-    binding.pry
   end
 
   def new
