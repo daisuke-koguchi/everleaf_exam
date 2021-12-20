@@ -15,6 +15,17 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'capybara/rspec'
 RSpec.configure do |config|
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
+
   config.before(:each) do |example|
     if example.metadata[:type] == :system
       driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]  do |options|

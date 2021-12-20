@@ -4,7 +4,7 @@ FactoryBot.define do
       description {'テスト詳細1'}
       deadline{'2026-01-01'}
       status{'未着手'}
-      priority{'高'}
+      priority{'高'} 
   end
   factory :second_task ,class: Task do
       name {'テストタイトル2'}
