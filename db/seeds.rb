@@ -20,3 +20,30 @@ User.create!(
   password_confirmation: 'password',
   admin: true  
 )
+
+10.times do |n|
+  User.create(
+    name: "user#{n+1}",
+    email: "user#{n+1}@example.com",
+    password: 'password',
+    password_confirmation: 'password',
+    admin: false 
+  )
+end
+
+10.times do |n|
+  Task.create(
+    name: "task#{n+1}",
+    description: "description#{n+1}",
+    deadline: DateTime.now,
+    status: 0,
+    priority: 0,
+    user_id: 1
+  )
+end
+
+10.times do |n|
+  Label.create(
+    name:"label#{n+1}"
+  )
+end

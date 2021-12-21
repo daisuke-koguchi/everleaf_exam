@@ -26,6 +26,14 @@
       <td><%= @task.priority %></td>
     </tr>
     <tr>
+    <tr>
+      <th>ラベル</th>
+      <td>
+      <% @task.labels.each do |label|%>
+        <%= label.name %>
+      <% end %>
+      </td>
+    </tr>
       <th>登録日時</th>
       <td><%= @task.created_at %></td>
     </tr>

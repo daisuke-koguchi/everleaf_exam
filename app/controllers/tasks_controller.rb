@@ -6,10 +6,13 @@ class TasksController < ApplicationController
     elsif params[:sort_priority]
       @tasks = current_user.tasks.priority.page(params[:page])
     elsif params[:task].present?
-      if params[:task][:name].present? && params[:task][:status].present?
-        @tasks = current_user.tasks.search_name(params[:task][:name]).search_status(params[:task][:status]).page(params[:page])
-      elsif params[:task][:name].present?
+      if params[:task][:name].present? && params[:task][:status] == '選択して下さい'
         @tasks = current_user.tasks.search_name(params[:task][:name]).page(params[:page])
+      elsif params[:task][:name].present? && params[:task][:status].present?
+        @tasks = current_user.tasks.search_name(params[:task][:name]).search_status(params[:task][:status]).page(params[:page])
+      elsif params[:task][:label_id].present?
+        @label_task = LabelTask.where(label_id: params[:task][:label_id]).pluck(:task_id)
+        @tasks = current_user.tasks.where(id: @label_task).page(params[:page])
       elsif params[:task][:status].present?
         @tasks = current_user.tasks.search_status(params[:task][:status]).page(params[:page])
       end
@@ -18,7 +21,7 @@ class TasksController < ApplicationController
     end
   end
 
-  def show  
+  def show
   end
 
   def new
@@ -52,7 +55,7 @@ class TasksController < ApplicationController
 
   private
   def task_params
-    params.require(:task).permit(:name, :description, :deadline, :status, :priority).merge(user_id:current_user.id)
+    params.require(:task).permit(:name, :description, :deadline, :status, :priority,{label_ids: []}).merge(user_id:current_user.id)
   end
   def set_task
     @task = Task.find(params[:id])
