@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 User.create!(
   name: 'テスト一郎',
-  email: 'test_user@test.com',
+  email: 'test@test.com',
   password: 'password',
   password_confirmation: 'password',
   admin: false 
@@ -15,29 +15,13 @@ User.create!(
 
 User.create!(
   name: '管理者',
-  email: 'admin_user@test.com',
+  email: 'admin@test.com',
   password: 'password',
   password_confirmation: 'password',
   admin: true  
 )
 
-Label.create!(
-  name:'英語'
-)
-Label.create!(
-  name:'数学'
-)
-Label.create!(
-  name:'国語'
-)
-Label.create!(
-  name:'社会'
-)
-Label.create!(
-  name:'理科'
-)
-
-10.times do |i|
+10.times do |n|
   User.create(
     name: "user#{n+1}",
     email: "user#{n+1}@example.com",
@@ -47,7 +31,7 @@ Label.create!(
   )
 end
 
-10.times do |i|
+10.times do |n|
   Task.create(
     name: "task#{n+1}",
     description: "description#{n+1}",
@@ -58,14 +42,7 @@ end
   )
 end
 
-10.times do |i|
-  LabelTask.create(
-    label_id: i + 1, 
-    task_id: 1
-  )
-end
-
-10.times do |i|
+10.times do |n|
   Label.create(
     name:"label#{n+1}"
   )
